@@ -80,6 +80,8 @@
         android:layout_marginEnd="16dp"
         android:text="@string/login"
         android:textColor="#50c3ca"
+        android:background="@drawable/edit_text_rounded_corners"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
