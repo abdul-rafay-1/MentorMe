@@ -14,16 +14,10 @@ class login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
 
-        txt_nav()
-
-
-
-    }
-
-    fun txt_nav(){
-        var txt:TextView = findViewById(R.id.textView9)
+        val txt:TextView = findViewById(R.id.textView9)
         txt.setOnClickListener {
             startActivity(Intent(this,signup::class.java))
         }
+
     }
 }

@@ -3,8 +3,7 @@ package com.AbdulRafay.i212582
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
+import android.os.Handler
 
 
 class MainActivity : AppCompatActivity() {
@@ -12,10 +11,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var btn:Button = findViewById(R.id.button)
-        btn.setOnClickListener {
-                startActivity(Intent(this,login::class.java))
-        }
+        Handler().postDelayed({
+            val i = Intent(this@MainActivity, login::class.java)
+            startActivity(i)
+            finish()
+        }, 2000)
 
     }
 }
