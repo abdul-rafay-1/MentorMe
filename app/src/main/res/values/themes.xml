@@ -6,7 +6,14 @@
         <item name="colorSecondary">#50c3ca</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
     </style>
+
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/spinner_txt_color</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
 
     <style name="Theme.I212582" parent="Base.Theme.I212582" />
 </resources>

@@ -11,4 +11,26 @@
     <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="don_t_have_an_account" >Don\'t have an account?  .</string>
     <string name="sign_up">Sign Up</string>
+    <string name="get_started">Get Started!</string>
+    <string name="name">Name</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="enter_contact_number">Enter Contact Number</string>
+    <string name="select_country">Select Country</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="password_must_be_8_characters_long">Password must be 8 characters long</string>
+    <string name="already_have_an_account">Already have an account? .</string>
+
+    <string-array name="country_items">
+        <item>Select Country</item>
+        <item>Pakistan</item>
+        <item>Oman</item>
+    </string-array>
+
+    <string-array name="city_items">
+        <item>Select City</item>
+        <item>Islamabad</item>
+        <item>Rawalpindi</item>
+    </string-array>
 </resources>
