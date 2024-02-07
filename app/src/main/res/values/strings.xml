@@ -37,6 +37,10 @@
     <string name="_8">8</string>
     <string name="_9">9</string>
     <string name="_0">0</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="don_t_worry">Don’t worry! It happens. Please enter the email associated with your account.</string>
+    <string name="send">Send</string>
+    <string name="remember_your_password">Remember your password?</string>
 
     <string-array name="country_items">
         <item>Select Country</item>
