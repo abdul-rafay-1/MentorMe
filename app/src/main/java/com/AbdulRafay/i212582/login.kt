@@ -24,5 +24,9 @@ class login : AppCompatActivity() {
             startActivity(Intent(this,ForgotPassword::class.java))
         }
 
+        val btn:Button = findViewById(R.id.button2)
+        btn.setOnClickListener {
+            startActivity(Intent(this,MainMenu::class.java))
+        }
     }
 }

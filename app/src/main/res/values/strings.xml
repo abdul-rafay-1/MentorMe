@@ -41,6 +41,29 @@
     <string name="don_t_worry">Don’t worry! It happens. Please enter the email associated with your account.</string>
     <string name="send">Send</string>
     <string name="remember_your_password">Remember your password?</string>
+    <string name="please_type_a_">Please type a new password and re-enter the password. Type something you will remember!</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_new_password">Enter New Password</string>
+    <string name="reset_password">Reset Password?</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="reset_password_">Reset Password</string>
+    <string name="don_t_want_to_reset_password">Don\'t want to reset password</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="chat">Chat</string>
+    <string name="profile">Profile</string>
+    <string name="hello">Hello,</string>
+    <string name="ali">Ali</string>
+    <string name="ready_for_mentorship_let_s_begin_the_journey">Ready for mentorship? Let’s begin the journey!</string>
+    <string name="all">All</string>
+    <string name="education">Education</string>
+    <string name="entrepreneurship">Entrepreneurship</string>
+    <string name="personal_growth">Personal Growth</string>
+    <string name="career">Career</string>
+    <string name="top_mentors_for_you">Top Mentors for you</string>
+    <string name="view_all">View All</string>
+    <string name="john_des">I am a passionate UX designer at Google with a focus on creating user-centric and intuitive interfaces. With 10 years of experience, I have had the opportunity to work on diverse projects that have shaped my understanding of design principles and user experience</string>
 
     <string-array name="country_items">
         <item>Select Country</item>
@@ -53,4 +76,17 @@
         <item>Islamabad</item>
         <item>Rawalpindi</item>
     </string-array>
+
+    <string-array name="filter_items">
+        <item>filter</item>
+        <item>abc</item>
+        <item>def</item>
+    </string-array>
+
+    <string-array name="status_items">
+        <item>Available</item>
+        <item>Not Available</item>
+        <item>Partially Available</item>
+    </string-array>
+
 </resources>
