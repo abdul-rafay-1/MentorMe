@@ -11,42 +11,4 @@
     <string name="forgot_your_password">Forgot Your Password?</string>
     <string name="don_t_have_an_account" >Don\'t have an account?  .</string>
     <string name="sign_up">Sign Up</string>
-    <string name="get_started">Get Started!</string>
-    <string name="name">Name</string>
-    <string name="enter_name">Enter Name</string>
-    <string name="contact_number">Contact Number</string>
-    <string name="enter_contact_number">Enter Contact Number</string>
-    <string name="select_country">Select Country</string>
-    <string name="country">Country</string>
-    <string name="city">City</string>
-    <string name="password_must_be_8_characters_long">Password must be 8 characters long</string>
-    <string name="already_have_an_account">Already have an account? .</string>
-    <string name="verify_your_phone_number">Verify your phone number</string>
-    <string name="we_ve_have_sent_a_code_to">We\'ve sent a code to</string>
-    <string name="_92_321_2242022">+92 321 2242022</string>
-    <string name="verify">Verify</string>
-    <string name="send_code_again">Send code again</string>
-    <string name="_00_20">00:20</string>
-    <string name="_1">1</string>
-    <string name="_2">2</string>
-    <string name="_3">3</string>
-    <string name="_4">4</string>
-    <string name="_5">5</string>
-    <string name="_6">6</string>
-    <string name="_7">7</string>
-    <string name="_8">8</string>
-    <string name="_9">9</string>
-    <string name="_0">0</string>
-
-    <string-array name="country_items">
-        <item>Select Country</item>
-        <item>Pakistan</item>
-        <item>Oman</item>
-    </string-array>
-
-    <string-array name="city_items">
-        <item>Select City</item>
-        <item>Islamabad</item>
-        <item>Rawalpindi</item>
-    </string-array>
 </resources>
