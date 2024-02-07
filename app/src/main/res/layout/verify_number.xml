@@ -169,7 +169,6 @@
 
 
         <Button
-            android:id="@+id/button5"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -181,7 +180,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button6"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -197,7 +195,6 @@
             app:layout_constraintHorizontal_bias="0.5" />
 
         <Button
-            android:id="@+id/button7"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -214,7 +211,6 @@
 
 
         <Button
-            android:id="@+id/button8"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -230,7 +226,6 @@
             app:layout_constraintHorizontal_bias="0"  />
 
         <Button
-            android:id="@+id/button9"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -246,7 +241,6 @@
             app:layout_constraintHorizontal_bias="0.5" />
 
         <Button
-            android:id="@+id/button10"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -262,7 +256,6 @@
             app:layout_constraintHorizontal_bias="1"/>
 
         <Button
-            android:id="@+id/button11"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -278,7 +271,6 @@
             app:layout_constraintHorizontal_bias="0" />
 
         <Button
-            android:id="@+id/button12"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -294,7 +286,6 @@
             app:layout_constraintHorizontal_bias="0.5" />
 
         <Button
-            android:id="@+id/button13"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"
@@ -310,7 +301,6 @@
             app:layout_constraintHorizontal_bias="1" />
 
         <Button
-            android:id="@+id/button14"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/edit_text_rounded_corners"

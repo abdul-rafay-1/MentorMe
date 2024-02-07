@@ -12,9 +12,8 @@ class VerifyNumber : AppCompatActivity() {
         setContentView(R.layout.verify_number)
 
         val imgbtn: ImageButton = findViewById(R.id.imageView3)
-
         imgbtn.setOnClickListener{
-            startActivity(Intent(this,signup::class.java))
+            onBackPressed()
         }
 
     }

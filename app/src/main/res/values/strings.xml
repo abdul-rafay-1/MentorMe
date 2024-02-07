@@ -41,6 +41,14 @@
     <string name="don_t_worry">Don’t worry! It happens. Please enter the email associated with your account.</string>
     <string name="send">Send</string>
     <string name="remember_your_password">Remember your password?</string>
+    <string name="please_type_a_">Please type a new password and re-enter the password. Type something you will remember!</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_new_password">Enter New Password</string>
+    <string name="reset_password">Reset Password?</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="reset_password_">Reset Password</string>
+    <string name="don_t_want_to_reset_password">Don\'t want to reset password</string>
 
     <string-array name="country_items">
         <item>Select Country</item>

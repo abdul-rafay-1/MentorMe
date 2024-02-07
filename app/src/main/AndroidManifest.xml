@@ -25,6 +25,9 @@
         <activity android:name=".signup" android:exported="true"> </activity>
         <activity android:name=".VerifyNumber" android:exported="true"> </activity>
         <activity android:name=".ForgotPassword" android:exported="true"> </activity>
+        <activity android:name=".RestPassword" android:exported="true">
+
+        </activity>
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
