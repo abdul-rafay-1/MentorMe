@@ -31,6 +31,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/link_color"
+        android:background="@drawable/outline_edit_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView72"/>
+
+    <ImageView
         android:id="@+id/imageView22"
         android:layout_width="match_parent"
         android:layout_height="100dp"
