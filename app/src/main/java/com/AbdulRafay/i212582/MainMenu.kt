@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
+import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.constraintlayout.widget.ConstraintLayout
 
@@ -16,6 +17,10 @@ class MainMenu : AppCompatActivity() {
         val johnView: ConstraintLayout = findViewById(R.id.john)
         johnView.setOnClickListener{
             startActivity(Intent(this,BookSession::class.java))
+        }
+        val img:ImageView = findViewById(R.id.imageView6)
+        img.setOnClickListener{
+            startActivity(Intent(this,Notifications::class.java))
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar)

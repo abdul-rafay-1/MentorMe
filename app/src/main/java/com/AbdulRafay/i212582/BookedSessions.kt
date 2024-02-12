@@ -15,5 +15,9 @@ class BookedSessions : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.booked_sessions)
 
+        val img:ImageButton = findViewById(R.id.imageButton7)
+        img.setOnClickListener{
+            onBackPressed()
+        }
     }
 }

@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -13,8 +15,26 @@ class ProfileLayout : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_layout)
 
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar)
+
+
+        val btn:Button = findViewById(R.id.button)
+        btn.setOnClickListener{
+            startActivity(Intent(this,BookedSessions::class.java))
+        }
+        val img:ImageView = findViewById(R.id.imageView)
+        img.setOnClickListener{
+            startActivity(Intent(this,EditProfile::class.java))
+        }
+
+        val imgbtn: ImageButton = findViewById(R.id.imageButton7)
+        imgbtn.setOnClickListener{
+            onBackPressed()
+            bottomNavigationView.selectedItemId = R.id.nav_home
+
+        }
+
+
         bottomNavigationView.selectedItemId = R.id.nav_profile
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->

@@ -21,7 +21,7 @@ class CommunityLayout : AppCompatActivity() {
         }
 
         val img: ImageView = findViewById(R.id.img5)
-        imgbtn.setOnClickListener{
+        img.setOnClickListener{
             startActivity(Intent(this,PhotoLayout::class.java))
         }
 

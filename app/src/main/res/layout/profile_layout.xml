@@ -31,6 +31,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@color/link_color"
+        android:background="@drawable/outline_edit_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textView72"/>
+
+    <ImageView
         android:id="@+id/imageView22"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -463,6 +474,73 @@
                     android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintTop_toBottomOf="@id/ss2"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="180dp"
+                android:layout_height="145dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/main_menu_modules"
+                android:backgroundTint="#50c3ca"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tt1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jane"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:gravity="center_horizontal|center_vertical"/>
+                <ImageView
+                    android:id="@+id/st1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/baseline_star_24"
+                    app:layout_constraintTop_toBottomOf="@id/tt1"
+                    app:layout_constraintStart_toStartOf="parent"/>
+                <ImageView
+                    android:id="@+id/st2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/baseline_star_24"
+                    app:layout_constraintTop_toBottomOf="@id/tt1"
+                    app:layout_constraintStart_toEndOf="@id/st1"/>
+                <ImageView
+                    android:id="@+id/st3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/baseline_star_24"
+                    app:layout_constraintTop_toBottomOf="@id/tt1"
+                    app:layout_constraintStart_toEndOf="@id/st2"/>
+                <ImageView
+                    android:id="@+id/st4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/baseline_star_half_24"
+                    app:layout_constraintTop_toBottomOf="@id/tt1"
+                    app:layout_constraintStart_toEndOf="@id/st3"/>
+                <ImageView
+                    android:id="@+id/st5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/baseline_star_half_24"
+                    app:layout_constraintTop_toBottomOf="@id/tt1"
+                    app:layout_constraintStart_toEndOf="@id/st4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/her_tips"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintTop_toBottomOf="@id/st2"
                     app:layout_constraintStart_toStartOf="parent"/>
 
 

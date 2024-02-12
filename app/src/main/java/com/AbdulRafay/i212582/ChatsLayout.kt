@@ -17,9 +17,13 @@ class ChatsLayout : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_layout)
 
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar1)
+
         val imgbtn: ImageButton = findViewById(R.id.imageButton7)
         imgbtn.setOnClickListener{
             onBackPressed()
+            bottomNavigationView.selectedItemId = R.id.nav_home
+
         }
 
         val img2: ImageView = findViewById(R.id.imageView13)
@@ -41,7 +45,6 @@ class ChatsLayout : AppCompatActivity() {
             startActivity(Intent(this, JohnCooperChat::class.java))
         }
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar1)
         bottomNavigationView.selectedItemId = R.id.nav_chat
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
