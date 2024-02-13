@@ -24,6 +24,11 @@ class BookSession : AppCompatActivity() {
             startActivity(Intent(this,ReviewFeedback::class.java))
         }
 
+        val btn2: Button = findViewById(R.id.button1)
+        btn2.setOnClickListener {
+            startActivity(Intent(this,CommunityLayout::class.java))
+        }
+
         val btn1: Button = findViewById(R.id.button3)
         btn1.setOnClickListener {
             startActivity(Intent(this,BookAppointment::class.java))
