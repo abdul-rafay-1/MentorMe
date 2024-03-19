@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -55,7 +56,10 @@ class SearchLayout : AppCompatActivity() {
         val searchView: SearchView = findViewById(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                startActivity(Intent(applicationContext,SearchResults::class.java))
+                Toast.makeText(this@SearchLayout, query, Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, SearchResults::class.java)
+                intent.putExtra("searchquery", query)
+                startActivity(intent)
                 return true
             }
 
@@ -64,6 +68,7 @@ class SearchLayout : AppCompatActivity() {
                 return false
             }
         })
+
 
 
 

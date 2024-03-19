@@ -16,16 +16,21 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.AbdulRafay.i212582.AdapterClass
-import com.AbdulRafay.i212582.ItemClass
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
-class SearchResults : AppCompatActivity() {
+class SearchResults : AppCompatActivity(), SearchResultsMentorAdapter.OnAcceptButtonClickListener {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_results)
+        val searchQuery = intent.getStringExtra("searchquery")
+
+        getSearchResults(searchQuery!!)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar)
 
@@ -66,30 +71,44 @@ class SearchResults : AppCompatActivity() {
 
 
 
-        //val rv: RecyclerView = findViewById(R.id.recyclerView)
 
 
+    }
 
-        // Find the RecyclerView from the MainActivity
+    private fun getSearchResults(searchQuery: String){
+
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-
-        // Create and set the layout manager for the RecyclerView
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
-        val itemClasses = mutableListOf<ItemClass>()
+        val MentorsList = mutableListOf<Mentors>()
 
-        // Add item instances to the list
+        val database = FirebaseDatabase.getInstance().getReference("Mentors")
+        database.orderByChild("name").equalTo(searchQuery).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(casesSnapshot: DataSnapshot) {
 
-        itemClasses.add(ItemClass( R.drawable.search_result_image,R.drawable.heart, "Sample 1", "Lead - Technology Officer","Available", "\$500/Session"))
-        itemClasses.add(ItemClass( R.drawable.search_result_image,R.drawable.heart, "Sample 2", "Lead - Technology Officer","Available", "\$500/Session"))
-        itemClasses.add(ItemClass( R.drawable.search_result_image,R.drawable.heart, "Sample 3", "Lead - Technology Officer","Available", "\$500/Session"))
-        itemClasses.add(ItemClass( R.drawable.search_result_image,R.drawable.heart, "Sample 4", "Lead - Technology Officer","Available", "\$500/Session"))
+                for (caseSnapshot in casesSnapshot.children) {
+                    val id = caseSnapshot.child("id").getValue(String::class.java)
+                    val name = caseSnapshot.child("name").getValue(String::class.java)
+                    val price = caseSnapshot.child("price").getValue(String::class.java)
+                    val desc = caseSnapshot.child("desc").getValue(String::class.java)
+                    val imageURL = caseSnapshot.child("imageURL").getValue(String::class.java)
 
-        // Create and set the adapter
-        val adapter = AdapterClass(itemClasses)
-        recyclerView.adapter = adapter
+                    if (id != null && desc != null && name != null && price != null && imageURL != null) {
+                        MentorsList.add(Mentors(id, name, desc, price, imageURL))
+                    }
+                }
+                recyclerView.adapter = SearchResultsMentorAdapter(MentorsList, this@SearchResults)
 
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+    override fun onAcceptButtonClick(caseClass: Mentors) {
+        TODO("Not yet implemented")
     }
 }
 

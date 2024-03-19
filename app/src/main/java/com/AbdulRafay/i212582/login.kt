@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 
 class login : AppCompatActivity() {
+    private lateinit var mAuth:FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
@@ -24,9 +28,21 @@ class login : AppCompatActivity() {
             startActivity(Intent(this,ForgotPassword::class.java))
         }
 
+        mAuth = FirebaseAuth.getInstance()
+        val email: EditText = findViewById(R.id.editTextTextEmailAddress)
+        val pass: EditText = findViewById(R.id.editTextPassword)
+
         val btn:Button = findViewById(R.id.button2)
         btn.setOnClickListener {
-            startActivity(Intent(this,MainMenu::class.java))
+            mAuth.signInWithEmailAndPassword(
+                email.text.toString(),
+                pass.text.toString()
+            ).addOnSuccessListener {
+                startActivity(Intent(this, MainMenu::class.java))
+                finish()
+            }.addOnFailureListener {
+                Toast.makeText(this,"Failed To Sign In", Toast.LENGTH_LONG).show()
+            }
         }
     }
 }
