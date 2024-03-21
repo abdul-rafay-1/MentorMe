@@ -1,38 +1,132 @@
 package com.AbdulRafay.i212582
 
+import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
+import android.provider.MediaStore
+import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+
+class JohnCooperChat : AppCompatActivity(), MessageAdapter.MessageClickListener {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
+    private lateinit var messageRecyclerView: RecyclerView
+    private lateinit var messageBox: EditText
+    private lateinit var messageList: ArrayList<Message>
+    private lateinit var messageAdapter: MessageAdapter
+    private lateinit var ReceiverName: TextView
+    private lateinit var mentor: Mentors
+    private lateinit var imageUri: String
+    private lateinit var MessageimageUri: Uri
+
+    private var Room: String? = null
+    val takePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+        if (success) {
+            Toast.makeText(this, "Picture taken successfully", Toast.LENGTH_SHORT).show()
+           sendMessage(MessageimageUri.toString(),"image")
+        }
+    }
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK && result.data != null) {
+            val selectedImageUri: Uri? = result.data?.data
+            imageUri = selectedImageUri.toString()
 
 
-class JohnCooperChat : AppCompatActivity() {
+            selectedImageUri?.let { uri ->
+                val storageRef = FirebaseStorage.getInstance().reference.child("images/${1}")
+                storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                        val imageURL = uri.toString()
+                        Log.d("GalleryClass", "Image URL: $imageURL")
+                        sendMessage(imageURL,"image")
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.e("GalleryClass", "Upload failed", exception)
+                }
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.john_cooper_chat)
 
-        val imgbtn: ImageButton = findViewById(R.id.imageButton7)
-        imgbtn.setOnClickListener{
-            onBackPressed()
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().getReference("Chats")
+
+        mentor = intent.getParcelableExtra<Mentors>("mentor")!!
+
+
+
+        ReceiverName = findViewById(R.id.name)
+        if (ReceiverName.text == "")
+            ReceiverName.text = mentor.name
+
+        val senderid = auth.currentUser?.uid
+        Room = mentor.id + senderid
+
+
+        messageRecyclerView = findViewById(R.id.chatRecyclerView)
+        messageBox = findViewById(R.id.messageBox)
+        messageList = ArrayList()
+        messageAdapter = MessageAdapter(this, messageList, this)
+
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.stackFromEnd = true
+        messageRecyclerView.layoutManager = layoutManager
+        messageRecyclerView.adapter = messageAdapter
+
+
+        database.child(Room!!).child("messages").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                messageList.clear()
+                for (postSnapshot in snapshot.children) {
+                    val message = postSnapshot.getValue(Message::class.java)
+                    message?.let { messageList.add(it) }
+                }
+                messageAdapter.notifyDataSetChanged()
+                messageRecyclerView.scrollToPosition(messageList.size - 1)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("JohnCooperChat", "Failed to read messages: ${error.message}")
+            }
+        })
+        MessageimageUri = Uri.parse("android.resource://com.AbdulRafay.i212582/drawable/ic_launcher_background")
+        findViewById<ImageView>(R.id.camera).setOnClickListener {
+            takePicture.launch(MessageimageUri)
+        }
+        findViewById<ImageView>(R.id.file).setOnClickListener {
+        }
+        findViewById<ImageView>(R.id.gallery).setOnClickListener {
+            openGallery()
         }
 
-        val img: ImageView = findViewById(R.id.img4)
-        img.setOnClickListener{
-            startActivity(Intent(this,PhotoLayout::class.java))
-        }
+        findViewById<ImageView>(R.id.send).setOnClickListener {
+            val messageText = messageBox.text.toString()
+            sendMessage(messageText,"text")
 
-        val img2: ImageView = findViewById(R.id.imageView21)
-        img2.setOnClickListener{
-            startActivity(Intent(this,VoiceCall::class.java))
-        }
-
-        val img3: ImageView = findViewById(R.id.imageView20)
-        img3.setOnClickListener{
-            startActivity(Intent(this,VideoCall::class.java))
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar)
@@ -40,33 +134,84 @@ class JohnCooperChat : AppCompatActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_search -> {
-                    startActivity(Intent(applicationContext, SearchLayout::class.java))
-                    overridePendingTransition(0, 0)
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.nav_add -> {
-                    startActivity(Intent(applicationContext, AddMentor::class.java))
-                    overridePendingTransition(0, 0)
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.nav_home -> {
-                    startActivity(Intent(applicationContext, MainMenu::class.java))
-                    overridePendingTransition(0, 0)
-                    return@setOnNavigationItemSelectedListener true
-                }
-                R.id.nav_profile -> {
-                    startActivity(Intent(applicationContext, ProfileLayout::class.java))
-                    overridePendingTransition(0, 0)
-                    return@setOnNavigationItemSelectedListener true
-                }
+                R.id.nav_search -> startActivity(Intent(applicationContext, SearchLayout::class.java))
+                R.id.nav_add -> startActivity(Intent(applicationContext, AddMentor::class.java))
+                R.id.nav_home -> startActivity(Intent(applicationContext, MainMenu::class.java))
+                R.id.nav_profile -> startActivity(Intent(applicationContext, ProfileLayout::class.java))
                 R.id.nav_chat -> return@setOnNavigationItemSelectedListener true
-
             }
-            false
+            overridePendingTransition(0, 0)
+            true
         }
-
-
-
     }
+
+    private fun sendMessage(message: String, messageType:String) {
+        val senderid = auth.currentUser?.uid
+        val key = database.child(Room!!).child("messages").push().key
+        if (!key.isNullOrEmpty() && message.isNotBlank()) {
+            val message = Message(key, message,messageType, senderid, mentor.id)
+            database.child(Room!!).child("messages").child(key).setValue(message)
+            messageBox.setText("")
+        }
+    }
+
+    override fun onMessageClick(view: View, message: Message) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.inflate(R.menu.message_options)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.edit_message -> {
+                    showEditMessageDialog(message)
+                    true
+                }
+                R.id.remove_message -> {
+                    database.child(Room!!).child("messages").child(message.messageid!!).removeValue()
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.gravity = Gravity.END
+        popupMenu.show()
+    }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(intent)
+    }
+    private fun showEditMessageDialog(message: Message) {
+        val editText = EditText(this)
+        editText.setText(message.message)
+        val dialog = AlertDialog.Builder(this@JohnCooperChat)
+            .setTitle("Edit Message")
+            .setView(editText)
+            .setPositiveButton("Save") { dialog, _ ->
+                val updatedMessageText = editText.text.toString()
+                if (updatedMessageText.isNotBlank()) {
+                    val updatedMessage = mapOf(
+                        "messageid" to message.messageid,
+                        "message" to updatedMessageText,
+                        "receiverid" to message.receiverid,
+                        "senderid" to message.senderid
+                    )
+                    database.child(Room!!).child("messages").child(message.messageid!!)
+                        .updateChildren(updatedMessage)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@JohnCooperChat, "Message updated", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this@JohnCooperChat, "Failed to update message", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this@JohnCooperChat, "Message cannot be empty", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        dialog.show()
+    }
+
 }

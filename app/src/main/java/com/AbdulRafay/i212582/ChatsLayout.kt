@@ -9,41 +9,35 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
-class ChatsLayout : AppCompatActivity() {
+class ChatsLayout : AppCompatActivity(), ChatsLayoutAdapter.OnAcceptButtonClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chats_layout)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar1)
+        getChats()
+//        val imgbtn: ImageButton = findViewById(R.id.imageButton7)
+//        imgbtn.setOnClickListener{
+//            onBackPressed()
+//            bottomNavigationView.selectedItemId = R.id.nav_home
+//        }
+//
+//        val img2: ImageView = findViewById(R.id.imageView13)
+//        img2.setOnClickListener{
+//            startActivity(Intent(this,CommunityLayout::class.java))
+//        }
 
-        val imgbtn: ImageButton = findViewById(R.id.imageButton7)
-        imgbtn.setOnClickListener{
-            onBackPressed()
-            bottomNavigationView.selectedItemId = R.id.nav_home
 
-        }
-
-        val img2: ImageView = findViewById(R.id.imageView13)
-        img2.setOnClickListener{
-            startActivity(Intent(this,CommunityLayout::class.java))
-        }
-
-        val txt1:TextView = findViewById(R.id.textView7)
-        val txt2:TextView = findViewById(R.id.textView3)
-        val img:ImageView = findViewById(R.id.imageView19)
-
-        txt1.setOnClickListener {
-            startActivity(Intent(this, JohnCooperChat::class.java))
-        }
-        txt2.setOnClickListener {
-            startActivity(Intent(this, JohnCooperChat::class.java))
-        }
-        img.setOnClickListener {
-            startActivity(Intent(this, JohnCooperChat::class.java))
-        }
 
         bottomNavigationView.selectedItemId = R.id.nav_chat
 
@@ -74,7 +68,44 @@ class ChatsLayout : AppCompatActivity() {
             }
             false
         }
+    }
 
+    private fun getChats(){
 
+        val recyclerView: RecyclerView = findViewById(R.id.chatsRecyclerView)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+
+        val MentorsList = mutableListOf<Mentors>()
+
+        val database = FirebaseDatabase.getInstance().getReference("Mentors")
+        database.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(casesSnapshot: DataSnapshot) {
+
+                for (caseSnapshot in casesSnapshot.children) {
+                    val id = caseSnapshot.child("id").getValue(String::class.java)
+                    val name = caseSnapshot.child("name").getValue(String::class.java)
+                    val price = caseSnapshot.child("price").getValue(String::class.java)
+                    val desc = caseSnapshot.child("desc").getValue(String::class.java)
+                    val imageURL = caseSnapshot.child("imageURL").getValue(String::class.java)
+
+                    if (id != null && desc != null && name != null && price != null && imageURL != null) {
+                        MentorsList.add(Mentors(id, name, desc, price, imageURL))
+                    }
+                }
+                Toast.makeText(this@ChatsLayout, MentorsList.size.toString(), Toast.LENGTH_SHORT).show()
+                recyclerView.adapter = ChatsLayoutAdapter(MentorsList, this@ChatsLayout)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+    override fun onAcceptButtonClick(mentor: Mentors) {
+        val intent = Intent(this, JohnCooperChat::class.java)
+        intent.putExtra("mentor", mentor)
+        startActivity(intent)
     }
 }

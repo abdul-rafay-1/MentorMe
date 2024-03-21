@@ -55,6 +55,6 @@ class SearchResultsMentorAdapter(
     }
 
     interface OnAcceptButtonClickListener {
-        fun onAcceptButtonClick(caseClass: Mentors)
+        fun onAcceptButtonClick(mentor: Mentors)
     }
 }

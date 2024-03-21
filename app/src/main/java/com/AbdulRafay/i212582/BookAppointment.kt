@@ -50,7 +50,9 @@ class BookAppointment : AppCompatActivity() {
 
         val img1:CircleImageView = findViewById(R.id.m)
         img1.setOnClickListener{
-            startActivity(Intent(this,JohnCooperChat::class.java))
+            val intent = Intent(this,JohnCooperChat::class.java)
+            intent.putExtra("mentor",mentor)
+            startActivity(intent)
         }
 
         val img2:CircleImageView = findViewById(R.id.c)

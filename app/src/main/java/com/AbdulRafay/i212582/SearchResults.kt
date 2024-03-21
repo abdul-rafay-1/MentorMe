@@ -107,8 +107,10 @@ class SearchResults : AppCompatActivity(), SearchResultsMentorAdapter.OnAcceptBu
         })
     }
 
-    override fun onAcceptButtonClick(caseClass: Mentors) {
-        TODO("Not yet implemented")
+    override fun onAcceptButtonClick(mentor: Mentors) {
+        val intent = Intent(this,BookSession::class.java)
+        intent.putExtra("mentor", mentor)
+        startActivity(intent)
     }
 }
 
