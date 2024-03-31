@@ -7,6 +7,8 @@ import android.os.Handler
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +36,11 @@ class MainActivity : AppCompatActivity() {
         }, 100)
 
 
+    }
 
+    private fun getFCMToken(){
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            val Token:String = token
+        }
     }
 }

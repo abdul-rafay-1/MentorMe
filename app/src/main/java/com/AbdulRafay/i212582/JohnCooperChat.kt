@@ -2,6 +2,7 @@ package com.AbdulRafay.i212582
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -25,6 +26,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import java.io.File
+import java.io.IOException
+import java.util.UUID
 
 class JohnCooperChat : AppCompatActivity(), MessageAdapter.MessageClickListener {
 
@@ -52,14 +56,53 @@ class JohnCooperChat : AppCompatActivity(), MessageAdapter.MessageClickListener 
             val selectedImageUri: Uri? = result.data?.data
             imageUri = selectedImageUri.toString()
 
-
             selectedImageUri?.let { uri ->
-                val storageRef = FirebaseStorage.getInstance().reference.child("images/${1}")
+                val uniqueID = UUID.randomUUID().toString()
+                val storageRef = FirebaseStorage.getInstance().reference.child("Chats/images/${uniqueID}")
                 storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
                     taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
                         val imageURL = uri.toString()
-                        Log.d("GalleryClass", "Image URL: $imageURL")
                         sendMessage(imageURL,"image")
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.e("GalleryClass", "Upload failed", exception)
+                }
+            }
+        }
+    }
+
+    private val pickVideoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK && result.data != null) {
+            val selectedImageUri: Uri? = result.data?.data
+            imageUri = selectedImageUri.toString()
+
+            selectedImageUri?.let { uri ->
+                val uniqueID = UUID.randomUUID().toString()
+                val storageRef = FirebaseStorage.getInstance().reference.child("Chats/Videos/${uniqueID}")
+                storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                        val imageURL = uri.toString()
+                        sendMessage(imageURL,"video")
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.e("GalleryClass", "Upload failed", exception)
+                }
+            }
+        }
+    }
+
+    private val pickFileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK && result.data != null) {
+            val selectedFileUri: Uri? = result.data?.data
+            imageUri = selectedFileUri.toString()
+
+            selectedFileUri?.let { uri ->
+                val uniqueID = UUID.randomUUID().toString()
+                val storageRef = FirebaseStorage.getInstance().reference.child("Chats/Files/${uniqueID}")
+                storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                        val imageURL = uri.toString()
+                        sendMessage(imageURL,"file")
                     }
                 }.addOnFailureListener { exception ->
                     Log.e("GalleryClass", "Upload failed", exception)
@@ -118,9 +161,21 @@ class JohnCooperChat : AppCompatActivity(), MessageAdapter.MessageClickListener 
             takePicture.launch(MessageimageUri)
         }
         findViewById<ImageView>(R.id.file).setOnClickListener {
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "*/*"  // Set MIME type to filter files (optional)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            pickFileLauncher.launch(intent)
+
         }
         findViewById<ImageView>(R.id.gallery).setOnClickListener {
             openGallery()
+        }
+
+        findViewById<ImageView>(R.id.mic).setOnClickListener {
+            startRecording()
+        }
+        findViewById<ImageView>(R.id.micOff).setOnClickListener {
+            stopRecording()
         }
 
         findViewById<ImageView>(R.id.send).setOnClickListener {
@@ -142,6 +197,74 @@ class JohnCooperChat : AppCompatActivity(), MessageAdapter.MessageClickListener 
             }
             overridePendingTransition(0, 0)
             true
+        }
+    }
+
+    private var mediaRecorder: MediaRecorder? = null
+    private var audioFile: File? = null
+
+    fun showRecordingDialog() {
+        val builder = AlertDialog.Builder(this@JohnCooperChat)
+        builder.setTitle("Audio Recorder")
+
+        builder.setPositiveButton("Start") { dialog, which ->
+            startRecording()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.setOnDismissListener {
+            stopRecording()
+        }
+
+        builder.show()
+    }
+
+    private fun startRecording() {
+        try {
+            audioFile = File(this.externalCacheDir?.absolutePath, "audio_${UUID.randomUUID()}.3gp")
+            mediaRecorder = MediaRecorder().apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+                setOutputFile(audioFile?.absolutePath)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+                prepare()
+                start()
+            }
+        } catch (e: IOException) {
+            Toast.makeText(this@JohnCooperChat, "Recording failed", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun stopRecording() {
+        try {
+            mediaRecorder?.apply {
+                stop()
+                release()
+            }
+            if (audioFile != null) {
+                uploadAudioToFirestore(audioFile!!)
+            }
+        } catch (e: RuntimeException) {
+            // Handle stop failure
+            Toast.makeText(this@JohnCooperChat, "Failed to stop recording", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun uploadAudioToFirestore(audioFile: File) {
+        val uniqueID = UUID.randomUUID().toString()
+        val uri = Uri.fromFile(audioFile)
+        val storageRef = FirebaseStorage.getInstance().reference.child("images/Chats/${uniqueID}")
+        storageRef.putFile(uri).addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+                val audioURL = uri.toString()
+                sendMessage(audioURL,"audio")
+            }
+        }.addOnFailureListener { exception ->
+            Log.e("GalleryClass", "Upload failed", exception)
         }
     }
 
@@ -175,8 +298,20 @@ class JohnCooperChat : AppCompatActivity(), MessageAdapter.MessageClickListener 
         popupMenu.show()
     }
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickImageLauncher.launch(intent)
+        val dialog = AlertDialog.Builder(this@JohnCooperChat)
+            .setTitle("Image or Video")
+            .setPositiveButton("Image") { dialog, _ ->
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                pickImageLauncher.launch(intent)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Video") { dialog, _ ->
+                val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                pickVideoLauncher.launch(intent)
+                dialog.dismiss()
+            }.create()
+        dialog.show()
+
     }
     private fun showEditMessageDialog(message: Message) {
         val editText = EditText(this)

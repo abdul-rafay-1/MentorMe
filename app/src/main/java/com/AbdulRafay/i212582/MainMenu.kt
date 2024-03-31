@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.junit.Assert
 
 class MainMenu : AppCompatActivity(), MainMenuMentorAdapter.OnAcceptButtonClickListener {
     private lateinit var auth:FirebaseAuth
@@ -24,21 +26,24 @@ class MainMenu : AppCompatActivity(), MainMenuMentorAdapter.OnAcceptButtonClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_menu)
-        Log.d("MainMenu", "onCreate: ")
         getMentors()
 
         auth = FirebaseAuth.getInstance()
-        Log.d("MainMenu", "onCreate7: ")
         val logout:ImageView = findViewById(R.id.logouticon)
         logout.setOnClickListener{
             auth.signOut()
             startActivity(Intent(this,login::class.java))
             finish()
         }
-        Log.d("MainMenu", "onCreate8: ")
+        val uid = auth.currentUser?.uid
+        getUser(uid.toString()) { user ->
+            if (user != null) {
+                findViewById<TextView>(R.id.name).setText(user.name)
+            }
+        }
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_app_bar)
         bottomNavigationView.selectedItemId = R.id.nav_home
-        Log.d("MainMenu", "onCreate9: ")
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_search -> {
@@ -103,7 +108,32 @@ class MainMenu : AppCompatActivity(), MainMenuMentorAdapter.OnAcceptButtonClickL
         })
 
     }
+    private fun getUser(id: String, callback: (UserData?) -> Unit) {
+        database = FirebaseDatabase.getInstance().getReference("Users")
+        database.orderByChild("uid").equalTo(id).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val userDataSnapshot = snapshot.children.firstOrNull()
 
+                val user = userDataSnapshot?.let {
+                    UserData(
+                        it.child("uid").value.toString(),
+                        it.child("name").value.toString(),
+                        it.child("email").value.toString(),
+                        it.child("imageURL").value.toString(),
+                        it.child("contactNo").value.toString(),
+                        it.child("country").value.toString(),
+                        it.child("city").value.toString(),
+
+                        )
+                }
+                callback(user)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
     override fun onAcceptButtonClick(mentor: Mentors) {
         val intent = Intent(this,BookSession::class.java)
         intent.putExtra("mentor", mentor)

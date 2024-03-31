@@ -20,6 +20,11 @@
         <item name="android:textColor">@color/link_color</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="reviewRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="android:maxHeight">22dip</item>
+    </style>
 
     <style name="Theme.I212582" parent="Base.Theme.I212582" />
 </resources>

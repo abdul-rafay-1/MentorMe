@@ -77,6 +77,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:weightSum="110"
         android:layout_above="@id/coordinatorLayout2"
         android:background="@drawable/expertise_bg"
         android:orientation="horizontal"
@@ -84,22 +85,25 @@
 
         <ImageView
             android:id="@+id/file"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_weight="10"
             android:background="@drawable/baseline_attach_file_24" />
 
         <ImageView
             android:id="@+id/gallery"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_weight="10"
             android:background="@drawable/outline_insert_photo_24" />
         
         <EditText
             android:id="@+id/messageBox"
-            android:layout_width="170dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="40"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:hint="Type something..."
@@ -107,22 +111,34 @@
 
         <ImageView
             android:id="@+id/camera"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
             android:layout_marginTop="12dp"
             android:background="@drawable/camera_outline_white" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/mic"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
             android:layout_marginTop="14dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/baseline_mic_24" />
+        <ImageView
+            android:id="@+id/micOff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/outline_mic_off_24" />
 
         <ImageView
             android:id="@+id/send"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="10"
             android:layout_marginTop="14dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/baseline_send_24" />

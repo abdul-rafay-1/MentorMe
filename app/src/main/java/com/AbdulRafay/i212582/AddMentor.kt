@@ -120,13 +120,11 @@ class AddMentor : AppCompatActivity() {
     }
     private fun addMentor(){
 
-        Log.d("AddMentor", "addMentor: $uid")
         name = findViewById<TextView>(R.id.name).text.toString()
         desc = findViewById<TextView>(R.id.desc).text.toString()
         price = findViewById<TextView>(R.id.price).text.toString()
 
         database = FirebaseDatabase.getInstance().getReference("Mentors")
-        Log.d("AddMentor", "addMentor: ${database}")
         val mentor = Mentors(mentorId, name, desc, price, imageURL)
         database.child(mentorId).setValue(mentor).addOnSuccessListener {
             Toast.makeText(this, "Mentor Added...", Toast.LENGTH_SHORT).show()
